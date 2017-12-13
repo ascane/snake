@@ -7,8 +7,8 @@
 
 using namespace std;
 
-enum cell_type {EMPTY = 0, OBSTACLE = 1, SNAKE = 2, FRUIT = 3};
-const string cell_type_char = ".X#o";
+enum cell_type {EMPTY = 0, OBSTACLE = 1, HEAD = 2, BODY = 3, FRUIT = 4};
+const string cell_type_char = ".X@#o";
 
 class Map {
 public:
@@ -57,9 +57,6 @@ public:
     }
 
     void draw(int x_offset) {
-
-
-
         cout << string(x_offset, ' ');
         cout << string(width + 2, cell_type_char[OBSTACLE]);
         cout << "\r\n";
@@ -75,7 +72,6 @@ public:
         }
         cout << string(x_offset, ' ');
         cout << string(width + 2, cell_type_char[OBSTACLE]);
-
     }
 
 private:

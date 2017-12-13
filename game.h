@@ -16,7 +16,7 @@ enum button {UP = 119, DOWN = 115, LEFT = 97, RIGHT = 100, PAUSE = 112};
 class Game {
 public:
     Game() :
-        map(30, 15), snake(&map, Vec2(15, 10), 5, Vec2(1, 0)),
+        map(36, 15), snake(&map, Vec2(15, 10), 5, Vec2(1, 0)),
         game_over(false), paused(false), time_step(300), score(0) {}
 
     void spawn_fruit() {
@@ -45,7 +45,11 @@ public:
         cout << string(x_offset, ' ');
         cout << "score: " << score << "\r\n\r\n";
         map.draw(x_offset);
-        for (int j = 0; j < y_offset; ++j) {
+        cout << "\r\n\r\n" << string(x_offset, ' ');
+        cout << "w - up, s - down, a - left, d - right,";
+        cout << "\r\n\r\n" << string(x_offset, ' ');
+        cout << "p - pause";
+        for (int j = 0; j < y_offset - 2; ++j) {
             cout << "\r\n";
         }
     }

@@ -15,12 +15,13 @@ class Snake {
     Snake(Map* map, Vec2 init_position, int init_length, Vec2 init_dir) {
         this->map = map;
         this->dir = init_dir;
-        this->body.push_front(init_position);
+        this->whole_body.push_front(init_position);
         for (int i = 0; i < init_length; ++i) {
             Vec2 pos = init_position - init_dir * i;
-            this->body.push_back(pos);
-            map->set(pos, SNAKE);
+            this->whole_body.push_back(pos);
+            map->set(pos, BODY);
         }
+        map->set(init_position, HEAD);
     }
 
     Vec2 get_dir() {
@@ -28,16 +29,18 @@ class Snake {
     }
 
     move_result move() {
-        Vec2 next_pos = body.front() + dir;
+        Vec2 next_pos = whole_body.front() + dir;
         if (map->get(next_pos) == EMPTY) {
-            map->set(next_pos, SNAKE);
-            body.push_front(next_pos);
-            map->set(body.back(), EMPTY);
-            body.pop_back();
+            map->set(whole_body.front(), BODY);
+            map->set(next_pos, HEAD);
+            whole_body.push_front(next_pos);
+            map->set(whole_body.back(), EMPTY);
+            whole_body.pop_back();
             return OK;
         } else if (map->get(next_pos) == FRUIT) {
-            map->set(next_pos, SNAKE);
-            body.push_front(next_pos);
+            map->set(whole_body.front(), BODY);
+            map->set(next_pos, HEAD);
+            whole_body.push_front(next_pos);
             return EAT;
         } else {
             return DIE;
@@ -50,7 +53,7 @@ class Snake {
     }
 
   private:
-    deque<Vec2> body;
+    deque<Vec2> whole_body;  // HEAD + BODY
     Vec2 dir;
     Map* map;
 };
