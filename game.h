@@ -7,6 +7,9 @@
 #include <chrono>
 #include <thread>
 #include <cstdlib>
+#include <sys/ioctl.h>
+#include <unistd.h>
+#include <string>
 
 enum button {UP = 119, DOWN = 115, LEFT = 97, RIGHT = 100, PAUSE = 112};
 
@@ -14,7 +17,7 @@ class Game {
 public:
     Game() :
         map(30, 15), snake(&map, Vec2(15, 10), 5, Vec2(1, 0)),
-        game_over(false), paused(false), time_step(300) {}
+        game_over(false), paused(false), time_step(300), score(0) {}
 
     void spawn_fruit() {
         Vec2 v;
@@ -25,10 +28,32 @@ public:
         map.set(v, FRUIT);
     }
 
+    void display() {
+        // Get terminal width and height.
+        struct winsize w;
+        ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
+        int t_width = w.ws_col;
+        int t_height = w.ws_row;
+
+        int x_offset = (t_width - map.get_width()) / 2;
+        int y_offset = (t_height - map.get_height()) / 2;
+
+
+        for (int j = 0; j < 30; ++j) {
+            cout << "\r\n";
+        }
+        cout << string(x_offset, ' ');
+        cout << "score: " << score << "\r\n\r\n";
+        map.draw(x_offset);
+        for (int j = 0; j < y_offset; ++j) {
+            cout << "\r\n";
+        }
+    }
+
     void run() {
         int time_elapsed = 0;
         spawn_fruit();
-        map.draw();
+        display();
         while (!game_over) {
             bool moved = false;
             move_result result;
@@ -84,11 +109,12 @@ public:
             }
 
             if (moved) {
-                map.draw();
+                display();
                 time_elapsed = 0;
                 if (result == DIE) {
                     game_over = true;
                 } else if (result == EAT) {
+                    ++score;
                     spawn_fruit();
                 }
             }
@@ -106,6 +132,7 @@ private:
     bool game_over;
     bool paused;
     int time_step;
+    int score;
 };
 
 #endif // GAME_H
