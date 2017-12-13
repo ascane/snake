@@ -56,21 +56,19 @@ public:
         }
     }
 
-    void draw(int x_offset) {
-        cout << string(x_offset, ' ');
+    void draw(int x_offset, int y_offset) {
+        set_cursor_pos(x_offset, y_offset);
         cout << string(width + 2, cell_type_char[OBSTACLE]);
-        cout << "\r\n";
         for (int j = 0; j < height; ++j) {
-            cout << string(x_offset, ' ');
+            set_cursor_pos(x_offset, y_offset + j + 1);
             cout << cell_type_char[OBSTACLE];
 
             for (int i = 0; i < width; ++i) {
                 cout << cell_type_char[data[i + j * width]];
             }
             cout << cell_type_char[OBSTACLE];
-            cout << "\r\n";
         }
-        cout << string(x_offset, ' ');
+        set_cursor_pos(x_offset, y_offset + height + 1);
         cout << string(width + 2, cell_type_char[OBSTACLE]);
     }
 

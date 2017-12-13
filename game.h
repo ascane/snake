@@ -35,28 +35,26 @@ public:
         int t_width = w.ws_col;
         int t_height = w.ws_row;
 
-        int x_offset = (t_width - map.get_width()) / 2;
-        int y_offset = (t_height - map.get_height()) / 2;
+        int x_offset = (t_width - map.get_width() - 2) / 2;
+        int y_offset = (t_height - map.get_height() - 2) / 2;
 
+        // Clear the terminal.
+        set_cursor_pos(0, 0);
+        cout << string(t_width * t_height, ' ');
 
-        for (int j = 0; j < 30; ++j) {
-            cout << "\r\n";
-        }
-        cout << string(x_offset, ' ');
-        cout << "score: " << score << "\r\n\r\n";
-        map.draw(x_offset);
-        cout << "\r\n\r\n" << string(x_offset, ' ');
+        set_cursor_pos(x_offset, y_offset - 2);
+        cout << "score: " << score;
+        map.draw(x_offset, y_offset);
+        set_cursor_pos(x_offset, y_offset + map.get_height() + 4);
         cout << "w - up, s - down, a - left, d - right,";
-        cout << "\r\n\r\n" << string(x_offset, ' ');
-        cout << "p - pause";
-        for (int j = 0; j < y_offset - 2; ++j) {
-            cout << "\r\n";
-        }
+        set_cursor_pos(x_offset, y_offset + map.get_height() + 6);
+        cout << "p - pause\r\n";
     }
 
     void run() {
         int time_elapsed = 0;
         spawn_fruit();
+        clear_display();
         display();
         while (!game_over) {
             bool moved = false;
