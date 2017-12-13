@@ -16,6 +16,14 @@ struct Vec2 {
         return Vec2(x + that.x, y + that.y);
     }
 
+    Vec2 operator-(const Vec2& that) const {
+        return Vec2(x - that.x, y - that.y);
+    }
+
+    Vec2 operator*(int n) const {
+        return Vec2(n * x, n * y);
+    }
+
     bool operator==(const Vec2& that) const {
         return x == that.x && y == that.y;
     }

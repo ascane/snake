@@ -13,7 +13,7 @@ enum button {UP = 119, DOWN = 115, LEFT = 97, RIGHT = 100, PAUSE = 112};
 class Game {
 public:
     Game() :
-        map(30, 15), snake(&map, Vec2(10, 10), Vec2(1, 0)),
+        map(30, 15), snake(&map, Vec2(15, 10), 5, Vec2(1, 0)),
         game_over(false), paused(false), time_step(300) {}
 
     void spawn_fruit() {

@@ -12,11 +12,15 @@ enum move_result {OK, EAT, DIE};
 class Snake {
   public:
 
-    Snake(Map* map, Vec2 init_position, Vec2 init_dir) {
-        this->body.push_front(init_position);
-        this->dir = init_dir;
+    Snake(Map* map, Vec2 init_position, int init_length, Vec2 init_dir) {
         this->map = map;
-        map->set(init_position, SNAKE);
+        this->dir = init_dir;
+        this->body.push_front(init_position);
+        for (int i = 0; i < init_length; ++i) {
+            Vec2 pos = init_position - init_dir * i;
+            this->body.push_back(pos);
+            map->set(pos, SNAKE);
+        }
     }
 
     Vec2 get_dir() {
