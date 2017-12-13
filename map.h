@@ -2,6 +2,8 @@
 #define MAP_H
 
 #include <iostream>
+#include <sys/ioctl.h>
+#include <unistd.h>
 #include <string>
 #include <vec2.h>
 
@@ -57,10 +59,24 @@ public:
     }
 
     void draw() {
-        cout << string(100, '\n');
+        // Get terminal width and height.
+        struct winsize w;
+        ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
+        int t_width = w.ws_col;
+        int t_height = w.ws_row;
+
+        int x_offset = (t_width - width) / 2;
+        int y_offset = (t_height - height) / 2;
+
+        for (int j = 0; j < 30; ++j) {
+            cout << "\r\n";
+        }
+        cout << string(30, '\n');
+        cout << string(x_offset, ' ');
         cout << string(width + 2, cell_type_char[OBSTACLE]);
         cout << "\r\n";
         for (int j = 0; j < height; ++j) {
+            cout << string(x_offset, ' ');
             cout << cell_type_char[OBSTACLE];
 
             for (int i = 0; i < width; ++i) {
@@ -69,8 +85,11 @@ public:
             cout << cell_type_char[OBSTACLE];
             cout << "\r\n";
         }
+        cout << string(x_offset, ' ');
         cout << string(width + 2, cell_type_char[OBSTACLE]);
-        cout << "\r\n";
+        for (int j = 0; j < y_offset; ++j) {
+            cout << "\r\n";
+        }
     }
 
 private:
