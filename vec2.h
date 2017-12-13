@@ -12,8 +12,12 @@ struct Vec2 {
         this->y = y;
     }
 
-    Vec2 const operator+(const Vec2& that) {
+    Vec2 operator+(const Vec2& that) const {
         return Vec2(x + that.x, y + that.y);
+    }
+
+    bool operator==(const Vec2& that) const {
+        return x == that.x && y == that.y;
     }
 };
 

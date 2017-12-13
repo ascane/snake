@@ -41,21 +41,33 @@ public:
                 if (!paused) {
                     switch (c) {
                         case UP:
+                        if (snake.get_dir() == Vec2(0, 1)) {
+                            break;
+                        }
                         result = snake.move(Vec2(0, -1));
                         moved = true;
                         break;
 
                         case DOWN:
+                        if (snake.get_dir() == Vec2(0, -1)) {
+                            break;
+                        }
                         result = snake.move(Vec2(0, 1));
                         moved = true;
                         break;
 
                         case LEFT:
+                        if (snake.get_dir() == Vec2(1, 0)) {
+                            break;
+                        }
                         result = snake.move(Vec2(-1, 0));
                         moved = true;
                         break;
 
                         case RIGHT:
+                        if (snake.get_dir() == Vec2(-1, 0)) {
+                            break;
+                        }
                         result = snake.move(Vec2(1, 0));
                         moved = true;
                         break;

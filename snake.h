@@ -19,6 +19,10 @@ class Snake {
         map->set(init_position, SNAKE);
     }
 
+    Vec2 get_dir() {
+        return dir;
+    }
+
     move_result move() {
         Vec2 next_pos = body.front() + dir;
         if (map->get(next_pos) == EMPTY) {
