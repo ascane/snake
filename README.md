@@ -10,3 +10,5 @@ a - Left
 d - Right
 
 p - Pause
+
+![Screenshot](snake.png)
