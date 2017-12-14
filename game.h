@@ -28,7 +28,7 @@ public:
         map.set(v, FRUIT);
     }
 
-    void display() {
+    void display(bool game_over) {
         // Get terminal width and height.
         struct winsize w;
         ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
@@ -42,20 +42,25 @@ public:
         set_cursor_pos(0, 0);
         cout << string(t_width * t_height, ' ');
 
+
         set_cursor_pos(x_offset, y_offset - 2);
         cout << "score: " << score;
         map.draw(x_offset, y_offset);
+
+        if (game_over) {
+            set_cursor_pos(t_width / 2 - 5, t_height / 2 - 1);
+            cout << "Game over!";
+        }
         set_cursor_pos(x_offset, y_offset + map.get_height() + 4);
         cout << "w - up, s - down, a - left, d - right,";
         set_cursor_pos(x_offset, y_offset + map.get_height() + 6);
-        cout << "p - pause\r\n";
+        cout << "p - pause\r\n\r\n";
     }
 
     void run() {
         int time_elapsed = 0;
         spawn_fruit();
-        clear_display();
-        display();
+        display(/*game_over=*/false);
         while (!game_over) {
             bool moved = false;
             move_result result;
@@ -111,7 +116,6 @@ public:
             }
 
             if (moved) {
-                display();
                 time_elapsed = 0;
                 if (result == DIE) {
                     game_over = true;
@@ -119,6 +123,7 @@ public:
                     ++score;
                     spawn_fruit();
                 }
+                display(game_over);
             }
 
             this_thread::sleep_for(std::chrono::milliseconds(10));
@@ -126,6 +131,7 @@ public:
                 time_elapsed += 10;
             }
         }
+
     }
 
 private:
