@@ -7,3 +7,4 @@ $ make <br />
 $ ./Snake <br />
 
 ![Screenshot](snake.png)
+![Screenshot_Game_Over](snake_game_over.png)
